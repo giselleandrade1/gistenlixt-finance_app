@@ -6,9 +6,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { LoginPanel } from "./components/LoginPanel";
 import { AuthFooter } from "./components/AuthFooter";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, ArrowRight } from "lucide-react";
 
 export default function Home() {
   const [notice, setNotice] = useState("");
@@ -40,6 +41,21 @@ export default function Home() {
           {/* Card principal */}
           <div className="rounded-3xl border border-white/30 bg-white/80 backdrop-blur-xl p-8 shadow-xl dark:border-white/10 dark:bg-slate-900/80 dark:shadow-2xl dark:shadow-purple-500/10 card-hover transition-smooth">
             <div className="space-y-6">
+              <div className="rounded-2xl border border-purple-200 bg-purple-50 px-4 py-4 text-sm text-purple-900 dark:border-purple-800 dark:bg-purple-950/40 dark:text-purple-100">
+                <p className="font-semibold">Acesso livre ao GistenLixt</p>
+                <p className="mt-1 text-purple-800 dark:text-purple-200">
+                  Você pode entrar no sistema sem login. O login fica disponível
+                  apenas se quiser usar uma conta.
+                </p>
+                <Link
+                  href="/dashboard"
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-purple-600 px-4 py-2 font-semibold text-white hover:bg-purple-700 transition-colors"
+                >
+                  Acessar GistenLixt agora
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+
               {/* Aviso de query params */}
               {notice && (
                 <div
