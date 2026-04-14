@@ -17,6 +17,18 @@
   --transition-slow: 500ms;
 }
 
+.dark {
+  --background: #0f0a1a;
+  --foreground: #f5f3ff;
+  --primary: #c084fc;
+  --primary-light: #e9d5ff;
+  --primary-dark: #9333ea;
+  --accent: #f472b6;
+  --accent-light: #fbcfe8;
+  --accent-dark: #9d174d;
+  color-scheme: dark;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -24,19 +36,6 @@
   --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0a1a;
-    --foreground: #f5f3ff;
-    --primary: #c084fc;
-    --primary-light: #e9d5ff;
-    --primary-dark: #9333ea;
-    --accent: #f472b6;
-    --accent-light: #fbcfe8;
-    --accent-dark: #9d174d;
-  }
 }
 
 /* Transições suaves padrão */
