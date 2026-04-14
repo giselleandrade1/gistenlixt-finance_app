@@ -260,7 +260,7 @@ export const CadastroPanel: React.FC<CadastroPanelProps> = ({
             disabled={loading || !!successMessage}
             variant="primary"
           >
-            Criar minha conta
+            Criar conta
           </Button>
         </form>
 

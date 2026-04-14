@@ -6,10 +6,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
-import { useTheme } from "@/app/providers/ThemeProvider";
+import { useThemeOptional } from "@/app/providers/ThemeProvider";
 
 export const ThemeToggle = () => {
-  const { theme, toggleTheme } = useTheme();
+  const themeContext = useThemeOptional();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,14 +19,34 @@ export const ThemeToggle = () => {
   // Evita renderizar até estar montado para prevenir mismatch de hidratação
   if (!mounted) {
     return (
-      <div className="rounded-lg p-2 w-9 h-9" aria-label="Carregando tema...">
-        {/* Placeholder vazio */}
-      </div>
+      <button
+        type="button"
+        className="rounded-lg p-2 w-9 h-9 opacity-0"
+        aria-label="Carregando tema..."
+        disabled
+      />
     );
   }
 
+  if (!themeContext) {
+    return (
+      <button
+        type="button"
+        className="rounded-lg p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+        aria-label="Tema indisponível"
+        title="Tema indisponível"
+        disabled
+      >
+        <Sun className="h-5 w-5 text-slate-400" />
+      </button>
+    );
+  }
+
+  const { theme, toggleTheme } = themeContext;
+
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       className="rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       title={`Mudar para tema ${theme === "light" ? "escuro" : "claro"}`}

@@ -39,6 +39,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [generalError, setGeneralError] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -73,6 +74,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setGeneralError("");
+    setInfoMessage("");
 
     // Valida antes de enviar
     if (!validateForm()) {
@@ -113,8 +115,10 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
    * Handler para "Esqueci minha senha"
    */
   const handleForgotPassword = () => {
-    // TODO: Implementar fluxo de recuperação de senha
-    alert("Funcionalidade em desenvolvimento");
+    setGeneralError("");
+    setInfoMessage(
+      "A recuperação de senha ainda não está automatizada. Entre em contato com o administrador para redefinir sua senha.",
+    );
   };
 
   return (
@@ -141,6 +145,16 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
           >
             <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
             <span>{generalError}</span>
+          </div>
+        )}
+
+        {infoMessage && (
+          <div
+            role="status"
+            className="flex items-start gap-3 rounded-xl border border-blue-300 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300 animate-slide-down"
+          >
+            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
+            <span>{infoMessage}</span>
           </div>
         )}
 
