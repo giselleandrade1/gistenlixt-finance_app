@@ -4,6 +4,8 @@ import { hashSync } from "bcryptjs";
 
 const dbPath = path.join(process.cwd(), "gastenlixt.db");
 const db = new Database(dbPath);
+const PUBLIC_USER_EMAIL = "public@gastenlixt.local";
+const PUBLIC_USER_NAME = "Visitante";
 
 // Enable foreign keys
 db.pragma("foreign_keys = ON");
@@ -161,7 +163,37 @@ export function initializeDatabase() {
     console.error("Error creating default admin user:", error);
   }
 
+  // Create a public shared user so anonymous visitors can use the system
+  try {
+    const publicPassword = hashSync("public-access", 10);
+    const result = db
+      .prepare(
+        "INSERT OR IGNORE INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+      )
+      .run(PUBLIC_USER_NAME, PUBLIC_USER_EMAIL, publicPassword, 1);
+
+    if (result.changes > 0) {
+      console.log("Default public user created: public access enabled");
+    }
+  } catch (error) {
+    console.error("Error creating default public user:", error);
+  }
+
   console.log("Database initialized successfully");
+}
+
+export function getPublicUser() {
+  const user = db
+    .prepare("SELECT id, name, email, role FROM users WHERE email = ?")
+    .get(PUBLIC_USER_EMAIL) as
+    | { id: number; name: string; email: string; role: number }
+    | undefined;
+
+  if (!user) {
+    throw new Error("Public user not available");
+  }
+
+  return user;
 }
 
 // Initialize on first import

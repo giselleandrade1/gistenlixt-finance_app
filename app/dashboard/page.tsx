@@ -21,18 +21,17 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    // Simular busca de dados do usuário
     const fetchUser = async () => {
       try {
         const response = await fetch("/api/auth/me", { method: "GET" });
         if (!response.ok) {
-          router.push("/");
+          setUser({ name: "Visitante", email: "" });
           return;
         }
         const data = await response.json();
         setUser({ name: data.user.name, email: data.user.email });
       } catch (error) {
-        router.push("/");
+        setUser({ name: "Visitante", email: "" });
       } finally {
         setLoading(false);
       }

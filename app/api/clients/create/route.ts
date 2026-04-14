@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import { parseAuthToken } from "@/lib/auth-token";
+import { getPublicUser } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
     const token = request.cookies.get("auth_token")?.value;
     const auth = parseAuthToken(token);
-
-    if (!auth) {
-      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
-    }
+    const userId = auth?.id ?? getPublicUser().id;
 
     const body = await request.json();
     const {
@@ -46,7 +44,7 @@ export async function POST(request: NextRequest) {
         "INSERT INTO clients (user_id, razao_social, cnpj, email, telefone, regime_tributario, anexo_simples, cidade, estado, faturamento_anual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       )
       .run(
-        auth.id,
+        userId,
         razao_social,
         cnpj,
         email || null,

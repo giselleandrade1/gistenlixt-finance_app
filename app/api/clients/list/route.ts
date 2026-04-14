@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import { parseAuthToken } from "@/lib/auth-token";
+import { getPublicUser } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get("auth_token")?.value;
     const auth = parseAuthToken(token);
-
-    if (!auth) {
-      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
-    }
+    const userId = auth?.id ?? getPublicUser().id;
 
     const clients = db
       .prepare(
         "SELECT id, razao_social, cnpj, email, telefone, regime_tributario, anexo_simples, cidade, estado, faturamento_anual, created_at, updated_at FROM clients WHERE user_id = ? ORDER BY created_at DESC",
       )
-      .all(auth.id) as Array<{
+      .all(userId) as Array<{
       id: number;
       razao_social: string;
       cnpj: string;

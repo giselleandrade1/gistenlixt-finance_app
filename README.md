@@ -83,7 +83,7 @@ npm test
 - Auth tokens are HttpOnly cookies
 - Passwords hashed with bcryptjs
 - Per-user data isolation with foreign keys
-- Middleware protection for private routes
+- Proxy layer reserved for future route-specific controls
 
 ## 📄 License
 

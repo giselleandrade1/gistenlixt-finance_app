@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import { parseAuthToken } from "@/lib/auth-token";
+import { getPublicUser } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,7 +9,7 @@ export async function GET(request: NextRequest) {
     const auth = parseAuthToken(token);
 
     if (!auth) {
-      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+      return NextResponse.json({ user: getPublicUser(), guest: true });
     }
 
     const user = db
